@@ -1,99 +1,123 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Phone, MessageCircle, ArrowRight, Quote, Globe, Cpu, Zap, LayoutGrid, MousePointer2 } from 'lucide-react';
+import { Phone, MessageCircle, ArrowRight, Quote, Globe, Gamepad2, Sparkles, ExternalLink, Brush, Gift, Grid3X3, Dices } from 'lucide-react';
+import projectOneImg from './assets/posmagic-screen.png';
+import projectTwoImg from './assets/edustream-screen.png';
 
 const phoneNumber = "77078434331";
-const formattedPhone = "+7 707 843 43 31";
+const formattedPhone = "+7 707 843 43 31"; // <-- Добавил пропущенную переменную
 
-// --- ДАННЫЕ ---
-
-const portfolioItems = [
+// --- ДАННЫЕ ПРОЕКТОВ ---
+const commercialProjects = [
   {
     id: 1,
-    title: "Ocean Logic",
-    category: "Логистика",
-    description: "Корпоративная система управления морскими перевозками.",
-    image: "https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&q=80&w=1000",
+    title: "POSMagic",
+    category: "Retail / B2B",
+    description: "Цифровая витрина для поставщика POS-материалов. Строгая каталогизация и презентация бренда.",
+    link: "https://cutemishka.github.io/posmagic.kz/",
+    image: projectOneImg,
   },
   {
     id: 2,
-    title: "Azure Capital",
-    category: "Инвестиции",
-    description: "Личный кабинет инвестора с аналитикой в реальном времени.",
-    image: "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&q=80&w=1000",
+    title: "EduStream Pro",
+    category: "EdTech",
+    description: "Образовательная платформа. Фокус на UX: личный кабинет студента, трекинг прогресса и видео-плеер.",
+    link: "#",
+    image: projectTwoImg,
   }
 ];
 
-const testimonials = [
+// --- ИГРЫ ---
+const gamesProjects = [
   {
     id: 1,
-    text: "Искали подрядчика, который понимает специфику крупного бизнеса. CuteSquad сделали всё четко, в срок и с потрясающим дизайном.",
-    author: "Александр В.",
-    role: "Директор Ocean Logic"
+    title: "Pixel World",
+    desc: "Онлайн-вайтборд для совместного творчества.",
+    link: "https://cutemishkapixels.onrender.com/",
+    icon: <Brush size={24} />,
   },
   {
     id: 2,
-    text: "Очень понравился подход. Никакой воды, только рабочие решения. Сайт окупился за первый месяц работы.",
-    author: "Марина Д.",
-    role: "Azure Capital"
+    title: "Card Battle",
+    desc: "Карточная стратегия в браузере.",
+    link: "https://cutemishka.github.io/cardgame/",
+    icon: <Dices size={24} />,
   },
   {
     id: 3,
-    text: "Заказывал сложный лендинг. Ребята предложили концепцию, от которой я не смог отказаться. Рекомендую.",
-    author: "Кайрат Н.",
-    role: "Предприниматель"
+    title: "Secret Santa",
+    desc: "Сервис для организации обмена подарками.",
+    link: "https://santa-cool.vercel.app/",
+    icon: <Gift size={24} />,
+  },
+  {
+    id: 4,
+    title: "Sudoku 1vs1",
+    desc: "Логическая игра с режимом дуэли.",
+    link: "https://cutemishka-sudoku.hf.space/",
+    icon: <Grid3X3 size={24} />,
   }
 ];
 
-// --- КОМПОНЕНТ: ПЕЧАТАЮЩИЙ И СТИРАЮЩИЙ ТЕКСТ ---
+// --- ОТЗЫВЫ ---
+const testimonials = [
+  {
+    id: 1,
+    text: "Чистота кода и дизайна. POSMagic стал эталоном в нашей нише. Спасибо за профессионализм.",
+    author: "Аноним",
+    role: "CEO POSMagic"
+  },
+  {
+    id: 2,
+    text: "Минимализм, который продает. Платформа получилась легкой и интуитивной.",
+    author: "Аноним",
+    role: "EduStream Founder"
+  },
+  {
+    id: 3,
+    text: "Идеальный баланс между креативом и технической частью. Игры работают безупречно.",
+    author: "Аноним",
+    role: "Product Manager"
+  }
+];
+
+// --- ЭФФЕКТ ПЕЧАТИ ---
 const TypewriterEffect = ({ phrases }) => {
   const [index, setIndex] = useState(0);
   const [subIndex, setSubIndex] = useState(0);
   const [reverse, setReverse] = useState(false);
   const [blink, setBlink] = useState(true);
 
-  // Логика мигания курсора
   useEffect(() => {
-    const timeout2 = setInterval(() => {
-      setBlink((prev) => !prev);
-    }, 500);
+    const timeout2 = setInterval(() => setBlink((prev) => !prev), 500);
     return () => clearInterval(timeout2);
   }, []);
 
-  // Логика печати
   useEffect(() => {
     if (subIndex === phrases[index].length + 1 && !reverse) {
-      // Слово напечатано полностью, ждем перед удалением
-      const timeout = setTimeout(() => {
-        setReverse(true);
-      }, 2000); // Пауза 2 секунды, когда слово готово
+      const timeout = setTimeout(() => setReverse(true), 2500);
       return () => clearTimeout(timeout);
     }
-
     if (subIndex === 0 && reverse) {
-      // Слово стерто полностью, переключаем на следующее
       setReverse(false);
       setIndex((prev) => (prev + 1) % phrases.length);
       return;
     }
-
     const timeout = setTimeout(() => {
       setSubIndex((prev) => prev + (reverse ? -1 : 1));
-    }, reverse ? 50 : 100); // Удаляем быстрее (50мс), чем печатаем (100мс)
-
+    }, reverse ? 30 : 80);
     return () => clearTimeout(timeout);
   }, [subIndex, index, reverse, phrases]);
 
   return (
     <span className="inline-block min-w-[300px] text-left">
       {phrases[index].substring(0, subIndex)}
-      <span className={`inline-block w-[3px] h-[0.9em] bg-blue-400 ml-1 align-middle transition-opacity duration-100 ${blink ? "opacity-100" : "opacity-0"}`} />
+      <span className={`inline-block w-[2px] h-[0.9em] bg-slate-400 ml-1 align-middle transition-opacity ${blink ? "opacity-100" : "opacity-0"}`} />
     </span>
   );
 };
 
-// --- ОСНОВНОЙ КОМПОНЕНТ ---
-
+// --- ГЛАВНЫЙ КОМПОНЕНТ ---
 export default function WebStudioLanding() {
   const [currentTestimonial, setCurrentTestimonial] = useState(0);
 
@@ -105,211 +129,120 @@ export default function WebStudioLanding() {
   }, []);
 
   return (
-    // ПАЛИТРА: Navy Blue (#020617) + White
-    <div className="min-h-screen bg-[#020617] text-white font-sans selection:bg-blue-600 selection:text-white relative overflow-x-hidden">
+    // ФОН: Очень светлый, почти белый (zinc-50), текст темно-серый (zinc-900)
+    <div className="min-h-screen bg-[#fafafa] text-zinc-900 font-sans selection:bg-zinc-200 selection:text-black overflow-x-hidden">
       
-      {/* Декоративный фон */}
-      <div className="fixed inset-0 z-0 pointer-events-none">
-        <div className="absolute inset-0 bg-gradient-to-br from-[#020617] via-[#0B1120] to-[#172554]" />
-        <div className="absolute inset-0 opacity-[0.05]" 
-          style={{ 
-            backgroundImage: 'linear-gradient(#ffffff 1px, transparent 1px), linear-gradient(to right, #ffffff 1px, transparent 1px)', 
-            backgroundSize: '40px 40px' 
-          }} 
-        />
-        {/* Анимированные шары */}
-        <motion.div 
-          animate={{ scale: [1, 1.2, 1], opacity: [0.1, 0.2, 0.1] }}
-          transition={{ duration: 10, repeat: Infinity, ease: "easeInOut" }}
-          className="absolute top-[-10%] right-[-5%] w-[600px] h-[600px] bg-blue-600/20 blur-[150px] rounded-full" 
-        />
-        <motion.div 
-          animate={{ scale: [1, 1.3, 1], opacity: [0.1, 0.15, 0.1] }}
-          transition={{ duration: 15, repeat: Infinity, ease: "easeInOut" }}
-          className="absolute bottom-[-10%] left-[-5%] w-[500px] h-[500px] bg-indigo-600/10 blur-[150px] rounded-full" 
-        />
-      </div>
+      {/* Тонкая фоновая сетка для строгости */}
+      <div className="fixed inset-0 z-0 opacity-[0.03]" 
+        style={{ 
+            backgroundImage: 'linear-gradient(#000 1px, transparent 1px), linear-gradient(to right, #000 1px, transparent 1px)', 
+            backgroundSize: '80px 80px' 
+        }} 
+      />
 
-      {/* Навигация (СТРОГО ПО ЦЕНТРУ) */}
-      <nav className="fixed top-0 w-full z-50 px-6 py-6 backdrop-blur-md bg-[#020617]/80 border-b border-white/5">
+      {/* Навигация */}
+      <nav className="fixed top-0 w-full z-50 px-8 py-6 backdrop-blur-md bg-[#fafafa]/80 border-b border-zinc-200/50">
         <div className="max-w-7xl mx-auto flex justify-between items-center">
-          
-          {/* Левая колонка (Пустышка для баланса) */}
-          <div className="flex-1 hidden md:flex justify-start">
-             {/* Можно сюда добавить иконку меню, если нужно, пока пусто */}
+          <div className="text-xl font-semibold tracking-tight text-zinc-900">
+            CUTESQUAD
           </div>
           
-          {/* Центральная колонка (Название) */}
-          <div className="flex-1 text-center">
-            <span className="text-xl font-bold tracking-[0.3em] uppercase text-white drop-shadow-lg cursor-default">
-              Cutesquad
-            </span>
-          </div>
-          
-          {/* Правая колонка (Кнопка) */}
-          <div className="flex-1 flex justify-end">
-            <a 
-              href={`https://wa.me/${phoneNumber}`} 
-              className="group flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-blue-200 hover:text-white transition-all border border-blue-500/30 hover:bg-blue-500/20 px-6 py-3"
-            >
-              <MessageCircle size={16} className="group-hover:rotate-12 transition-transform" />
-              <span className="hidden sm:inline">Связаться</span>
-            </a>
-          </div>
-
+          <a 
+            href={`https://wa.me/${phoneNumber}`} 
+            className="group flex items-center gap-2 text-sm font-medium text-zinc-600 hover:text-black transition-colors border border-zinc-200 hover:border-zinc-400 px-5 py-2 rounded-full bg-white"
+          >
+            <MessageCircle size={16} />
+            <span>Start Project</span>
+          </a>
         </div>
       </nav>
 
-      {/* HERO секция */}
+      {/* HERO */}
       <section className="relative min-h-screen flex flex-col justify-center items-center text-center px-4 pt-20 z-10">
-        <div className="max-w-5xl relative">
-          
-          <motion.div 
-             initial={{ opacity: 0, y: -20 }}
-             animate={{ opacity: 1, y: 0 }}
-             transition={{ duration: 0.8 }}
-             className="mb-8 flex justify-center"
-          >
-            <span className="flex items-center gap-2 px-4 py-1 bg-blue-900/20 border border-blue-500/20 rounded-full text-blue-300 text-xs uppercase tracking-widest font-semibold backdrop-blur-sm">
-              <span className="relative flex h-2 w-2">
-                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-blue-400 opacity-75"></span>
-                <span className="relative inline-flex rounded-full h-2 w-2 bg-blue-500"></span>
-              </span>
-              Premium Web Design
-            </span>
-          </motion.div>
+        <motion.div 
+           initial={{ opacity: 0, y: 10 }}
+           animate={{ opacity: 1, y: 0 }}
+           transition={{ duration: 0.8 }}
+           className="max-w-4xl"
+        >
+          <div className="inline-flex items-center gap-2 px-3 py-1 mb-8 border border-zinc-200 rounded-full bg-white text-zinc-500 text-xs uppercase tracking-widest font-medium">
+            <Sparkles size={12} />
+            Digital Production
+          </div>
 
-          <h1 className="text-5xl md:text-8xl font-bold tracking-tight mb-8 leading-[1.1] text-white min-h-[160px] md:min-h-[220px] flex flex-col justify-center items-center">
-             Создаем <br />
-             <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-200 via-white to-blue-200">
-               <TypewriterEffect phrases={["Цифровое Будущее", "Премиальный Стиль"]} />
+          <h1 className="text-5xl md:text-7xl font-medium tracking-tight mb-8 leading-[1.1] text-zinc-900">
+             Эстетика кода <br />
+             <span className="text-zinc-400">
+               <TypewriterEffect phrases={["для вашего бизнеса.", "для ваших идей.", "для ваших клиентов."]} />
              </span>
           </h1>
 
-          <motion.p 
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.5, duration: 0.8 }}
-            className="text-lg md:text-xl text-slate-300 max-w-2xl mx-auto mb-12 font-light leading-relaxed"
-          >
-            Идеальный баланс эстетики и технологий. Сайты любой сложности с безупречной анимацией и продающей структурой.
-          </motion.p>
+          <p className="text-lg text-zinc-500 max-w-xl mx-auto mb-12 font-light leading-relaxed">
+            Мы создаем цифровые продукты, где форма следует за функцией. 
+            Никакого визуального шума. Только смысл.
+          </p>
 
-          <motion.div 
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.7, duration: 0.8 }}
-            className="flex flex-col sm:flex-row gap-0 border border-white/20 rounded-none overflow-hidden max-w-md mx-auto shadow-[0_0_40px_rgba(37,99,235,0.15)]"
-          >
+          <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
             <a 
               href={`https://wa.me/${phoneNumber}`}
-              className="flex-1 px-8 py-4 bg-white text-[#020617] font-bold text-lg hover:bg-blue-50 transition-colors flex justify-center items-center gap-2"
+              className="px-8 py-4 bg-zinc-900 text-white font-medium rounded-lg hover:bg-black hover:scale-[1.02] transition-all flex items-center gap-3"
             >
-              <MessageCircle size={20} />
-              WhatsApp
+              Обсудить проект
             </a>
             
             <a 
               href={`tel:${phoneNumber}`}
-              className="flex-1 px-8 py-4 bg-white/5 backdrop-blur-md text-white font-medium hover:bg-white/10 transition-colors flex justify-center items-center gap-2 border-l border-white/20"
+              className="px-8 py-4 text-zinc-600 font-medium rounded-lg hover:bg-zinc-100 transition-colors flex items-center gap-3"
             >
               <Phone size={20} />
-              Позвонить
+              {formattedPhone}
             </a>
-          </motion.div>
-        </div>
-        
-        {/* Иконка скролла */}
-        <motion.div 
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1, y: [0, 10, 0] }}
-          transition={{ delay: 1, duration: 2, repeat: Infinity }}
-          className="absolute bottom-10 text-white/30"
-        >
-          <MousePointer2 size={24} />
+          </div>
         </motion.div>
       </section>
 
-      {/* Секция "Почему мы" */}
-      <section className="py-24 px-6 border-y border-white/5 bg-[#020617]/50 relative z-10">
-        <div className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-0 divide-y md:divide-y-0 md:divide-x divide-white/10 border border-white/10 bg-[#0B1120]">
-          {[
-            { icon: <LayoutGrid />, title: "Структура", desc: "Продуманный UX/UI дизайн" },
-            { icon: <Cpu />, title: "Технологии", desc: "React, Next.js, Framer Motion" },
-            { icon: <Zap />, title: "Скорость", desc: "Моментальная загрузка страниц" },
-          ].map((item, index) => (
-            <motion.div 
-              key={index}
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: index * 0.2, duration: 0.6 }}
-              className="p-10 group hover:bg-white/5 transition-colors duration-500"
-            >
-              <div className="mb-6 text-blue-400 group-hover:text-white transition-colors duration-300 transform group-hover:scale-110 origin-left">
-                {item.icon}
-              </div>
-              <h3 className="text-xl font-bold mb-3 text-white">{item.title}</h3>
-              <p className="text-slate-400 text-sm leading-relaxed">{item.desc}</p>
-            </motion.div>
-          ))}
-        </div>
-      </section>
-
-      {/* Портфолио */}
-      <section className="py-32 px-6 relative z-10">
-        <div className="max-w-5xl mx-auto">
-          <motion.div 
-             initial={{ opacity: 0 }}
-             whileInView={{ opacity: 1 }}
-             viewport={{ once: true }}
-             className="flex items-end justify-between mb-16 border-b border-white/10 pb-6"
-          >
-            <h2 className="text-4xl font-bold text-white">Избранные проекты</h2>
-            <div className="hidden md:block text-slate-400 text-sm font-mono">2023 — 2024</div>
-          </motion.div>
+      {/* ПРОЕКТЫ (Бизнес) */}
+      <section className="py-24 px-6 relative z-10">
+        <div className="max-w-6xl mx-auto">
+          <div className="flex justify-between items-end mb-16 border-b border-zinc-200 pb-6">
+            <h2 className="text-3xl font-medium text-zinc-900">Избранные кейсы</h2>
+            <span className="text-zinc-400 text-sm">2024 — 2025</span>
+          </div>
 
           <div className="space-y-32">
-            {portfolioItems.map((item, index) => (
+            {commercialProjects.map((item, index) => (
               <motion.div
                 key={item.id}
-                initial={{ opacity: 0, y: 60 }}
+                initial={{ opacity: 0, y: 30 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, margin: "-10%" }}
-                transition={{ duration: 0.8, ease: "easeOut" }}
-                className={`flex flex-col ${index % 2 === 1 ? 'md:flex-row-reverse' : 'md:flex-row'} gap-12 items-center group`}
+                transition={{ duration: 0.6 }}
+                className={`flex flex-col ${index % 2 === 1 ? 'md:flex-row-reverse' : 'md:flex-row'} gap-12 lg:gap-20 items-center`}
               >
-                {/* Изображение */}
-                <div className="w-full md:w-3/5 relative perspective-1000">
-                  <div className="absolute inset-0 bg-blue-500/20 translate-x-4 translate-y-4 border border-white/10 -z-10 transition-transform duration-500 group-hover:translate-x-2 group-hover:translate-y-2" />
-                  <div className="aspect-[16/10] overflow-hidden border border-white/10 bg-slate-800 relative">
+                {/* Изображение: Чистое, без цветных фильтров */}
+                <a href={item.link} target="_blank" rel="noreferrer" className="w-full md:w-3/5 group cursor-pointer">
+                  <div className="overflow-hidden rounded-xl bg-zinc-100 border border-zinc-200 relative aspect-[4/3]">
                     <img 
                       src={item.image} 
                       alt={item.title} 
-                      className="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-700 ease-in-out group-hover:scale-105"
+                      className="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-105"
                     />
-                    <div className="absolute inset-0 bg-[#020617]/40 group-hover:bg-transparent transition-colors duration-500" />
+                    <div className="absolute inset-0 bg-black/0 group-hover:bg-black/5 transition-colors duration-500" />
                   </div>
-                </div>
+                </a>
 
-                {/* Описание */}
-                <div className="w-full md:w-2/5 flex flex-col justify-center">
-                  <motion.div 
-                    initial={{ opacity: 0, x: -20 }}
-                    whileInView={{ opacity: 1, x: 0 }}
-                    transition={{ delay: 0.2, duration: 0.5 }}
-                    className="text-blue-400 font-bold text-xs uppercase tracking-widest mb-4 flex items-center gap-2"
-                  >
-                    <span className="w-8 h-[1px] bg-blue-400"></span>
+                {/* Текст */}
+                <div className="w-full md:w-2/5 flex flex-col justify-center items-start">
+                  <span className="text-xs font-bold uppercase tracking-widest text-zinc-400 mb-4">
                     {item.category}
-                  </motion.div>
-                  <h3 className="text-4xl font-bold text-white mb-6 group-hover:text-blue-200 transition-colors">{item.title}</h3>
-                  <p className="text-slate-400 mb-8 leading-relaxed font-light">{item.description}</p>
+                  </span>
+                  <h3 className="text-3xl font-medium text-zinc-900 mb-4">{item.title}</h3>
+                  <p className="text-zinc-500 text-lg mb-8 font-light leading-relaxed">{item.description}</p>
                   
-                  <button className="self-start flex items-center gap-3 text-white border-b border-white/30 pb-2 hover:border-blue-400 hover:gap-5 transition-all duration-300">
-                    <span>Подробнее</span>
-                    <ArrowRight size={16} />
-                  </button>
+                  <a href={item.link} target="_blank" rel="noreferrer" className="group inline-flex items-center gap-2 text-zinc-900 font-medium border-b border-zinc-300 hover:border-black pb-1 transition-all">
+                    Смотреть проект 
+                    <ArrowRight size={16} className="group-hover:translate-x-1 transition-transform" />
+                  </a>
                 </div>
               </motion.div>
             ))}
@@ -317,74 +250,100 @@ export default function WebStudioLanding() {
         </div>
       </section>
 
-      {/* Отзывы */}
-      <section className="py-24 px-6 relative z-10">
-        <div className="max-w-3xl mx-auto">
-          <motion.div 
-            initial={{ opacity: 0, scale: 0.95 }}
-            whileInView={{ opacity: 1, scale: 1 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.8 }}
-            className="relative bg-white/5 backdrop-blur-xl border border-white/10 p-12 md:p-16 text-center"
-          >
-            <div className="absolute -top-6 left-1/2 -translate-x-1/2 w-12 h-12 bg-blue-600 flex items-center justify-center text-white shadow-lg shadow-blue-600/50">
-              <Quote size={20} />
+      {/* ИГРЫ (Grid Layout) */}
+      <section className="py-24 px-6 relative z-10 bg-zinc-50 border-y border-zinc-100">
+        <div className="max-w-6xl mx-auto">
+          <div className="mb-16 text-center">
+            <div className="inline-flex justify-center items-center w-12 h-12 bg-white rounded-xl border border-zinc-200 mb-6 text-zinc-600 shadow-sm">
+              <Gamepad2 size={24} />
             </div>
+            <h2 className="text-3xl font-medium text-zinc-900">Самые крутые проекты</h2>
+            <p className="text-zinc-500 mt-4">Наши эксперименты с интерактивностью</p>
+          </div>
 
-            <div className="min-h-[200px] flex flex-col justify-center">
-              <AnimatePresence mode="wait">
-                <motion.div
-                  key={currentTestimonial}
-                  initial={{ opacity: 0, y: 10, filter: 'blur(5px)' }}
-                  animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
-                  exit={{ opacity: 0, y: -10, filter: 'blur(5px)' }}
-                  transition={{ duration: 0.6 }}
-                >
-                  <p className="text-2xl font-light text-white mb-8 italic leading-relaxed">
-                    "{testimonials[currentTestimonial].text}"
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+            {gamesProjects.map((game, idx) => (
+              <motion.a
+                key={game.id}
+                href={game.link}
+                target="_blank"
+                rel="noreferrer"
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: idx * 0.1 }}
+                className="group bg-white p-8 rounded-xl border border-zinc-200 hover:border-zinc-400 transition-colors flex flex-col items-start gap-4 hover:shadow-lg hover:shadow-zinc-100"
+              >
+                <div className="p-3 bg-zinc-50 rounded-lg text-zinc-700 group-hover:bg-zinc-900 group-hover:text-white transition-colors">
+                  {game.icon}
+                </div>
+                <div>
+                  <h3 className="text-lg font-bold text-zinc-900 mb-2">{game.title}</h3>
+                  <p className="text-sm text-zinc-500 leading-relaxed">
+                    {game.desc}
                   </p>
-                  <div className="flex flex-col items-center">
-                    <span className="font-bold text-blue-200 uppercase tracking-wider text-sm mb-1">
-                      {testimonials[currentTestimonial].author}
-                    </span>
-                    <span className="text-slate-500 text-xs">
-                      {testimonials[currentTestimonial].role}
-                    </span>
-                  </div>
-                </motion.div>
-              </AnimatePresence>
-            </div>
-            
-            <div className="absolute bottom-0 left-0 h-[2px] bg-blue-600 animate-[width_6s_linear_infinite]" style={{width: '100%'}} />
-          </motion.div>
+                </div>
+                <div className="mt-auto pt-4 w-full flex justify-between items-center opacity-0 group-hover:opacity-100 transition-opacity text-xs font-bold uppercase tracking-widest text-zinc-400">
+                  <span>Play</span>
+                  <ArrowRight size={14} />
+                </div>
+              </motion.a>
+            ))}
+          </div>
         </div>
       </section>
 
-      {/* Футер */}
-      <footer className="py-16 bg-[#01040f] border-t border-white/5 text-center relative z-10">
-        <motion.div 
-           initial={{ opacity: 0, y: 20 }}
-           whileInView={{ opacity: 1, y: 0 }}
-           transition={{ duration: 0.8 }}
-           className="flex flex-col items-center gap-8"
-        >
-          <h2 className="text-5xl font-bold tracking-tighter text-white/10 hover:text-white/30 transition-colors cursor-default select-none">
+      {/* ОТЗЫВЫ (Minimal) */}
+      <section className="py-32 px-6 relative z-10">
+        <div className="max-w-3xl mx-auto text-center">
+          <Quote size={40} className="text-zinc-200 mx-auto mb-8" />
+          
+          <div className="min-h-[200px] flex flex-col justify-center">
+            <AnimatePresence mode="wait">
+              <motion.div
+                key={currentTestimonial}
+                initial={{ opacity: 0, scale: 0.98 }}
+                animate={{ opacity: 1, scale: 1 }}
+                exit={{ opacity: 0, scale: 1.02 }}
+                transition={{ duration: 0.4 }}
+              >
+                <p className="text-2xl font-light text-zinc-800 mb-8 leading-relaxed">
+                  "{testimonials[currentTestimonial].text}"
+                </p>
+                <div>
+                  <div className="font-semibold text-zinc-900 text-sm uppercase tracking-wider">
+                    {testimonials[currentTestimonial].author}
+                  </div>
+                  <div className="text-zinc-400 text-xs mt-1">
+                    {testimonials[currentTestimonial].role}
+                  </div>
+                </div>
+              </motion.div>
+            </AnimatePresence>
+          </div>
+        </div>
+      </section>
+
+      {/* ФУТЕР */}
+      <footer className="py-12 border-t border-zinc-200 bg-white text-center relative z-10">
+        <div className="flex flex-col items-center gap-6">
+          <h2 className="text-lg font-bold tracking-widest text-zinc-900 uppercase">
             CUTESQUAD
           </h2>
           
-          <div className="flex gap-6">
-            <a href={`https://wa.me/${phoneNumber}`} className="w-12 h-12 border border-white/10 rounded-full flex items-center justify-center text-white hover:bg-white hover:text-black transition-all hover:scale-110">
-               <MessageCircle size={20} />
+          <div className="flex gap-4">
+            <a href={`https://wa.me/${phoneNumber}`} className="text-zinc-400 hover:text-zinc-900 transition-colors">
+               <MessageCircle size={24} />
             </a>
-            <a href="#" className="w-12 h-12 border border-white/10 rounded-full flex items-center justify-center text-white hover:bg-white hover:text-black transition-all hover:scale-110">
-               <Globe size={20} />
+            <a href="#" className="text-zinc-400 hover:text-zinc-900 transition-colors">
+               <Globe size={24} />
             </a>
           </div>
 
-          <p className="text-slate-500 text-sm mt-4">
-            © 2024. All rights reserved. <br/> Designed with precision.
+          <p className="text-zinc-400 text-sm">
+            © 2024. Almaty, Kazakhstan.
           </p>
-        </motion.div>
+        </div>
       </footer>
     </div>
   );
