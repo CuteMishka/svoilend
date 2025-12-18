@@ -19,10 +19,10 @@ const commercialProjects = [
   },
   {
     id: 2,
-    title: "EduStream Pro",
-    category: "EdTech",
-    description: "Образовательная платформа. Фокус на UX: личный кабинет студента, трекинг прогресса и видео-плеер.",
-    link: "#",
+    title: "KOI",
+    category: "Medicine",
+    description: "Новостной корпоративный сайт. Целая экосистема созданная для сотрудников.",
+    link: "https://koi-inky.vercel.app/",
     image: projectTwoImg,
   }
 ];
@@ -144,7 +144,7 @@ export default function WebStudioLanding() {
       <nav className="fixed top-0 w-full z-50 px-8 py-6 backdrop-blur-md bg-[#fafafa]/80 border-b border-zinc-200/50">
         <div className="max-w-7xl mx-auto flex justify-between items-center">
           <div className="text-xl font-semibold tracking-tight text-zinc-900">
-            CUTESQUAD
+            COHORT
           </div>
           
           <a 
@@ -328,7 +328,7 @@ export default function WebStudioLanding() {
       <footer className="py-12 border-t border-zinc-200 bg-white text-center relative z-10">
         <div className="flex flex-col items-center gap-6">
           <h2 className="text-lg font-bold tracking-widest text-zinc-900 uppercase">
-            CUTESQUAD
+            COHORT
           </h2>
           
           <div className="flex gap-4">
