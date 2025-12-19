@@ -19,9 +19,9 @@ const commercialProjects = [
   },
   {
     id: 2,
-    title: "KOI",
-    category: "Medicine",
-    description: "Новостной корпоративный сайт. Целая экосистема созданная для сотрудников.",
+    title: "EduStream",
+    category: "Education",
+    description: "Сайт платформа для видеосозвонов с учениками.",
     link: "https://koi-inky.vercel.app/",
     image: projectTwoImg,
   }
